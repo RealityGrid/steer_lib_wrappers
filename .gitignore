@@ -1,0 +1,6 @@
+# ignore emacs generated ~
+*~
+
+# ignore ReG generated files
+ReG_checkpoint_log.xml
+ReG_params_log.dat

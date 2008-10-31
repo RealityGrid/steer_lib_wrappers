@@ -32,10 +32,10 @@
 
 %module ReG_Steer
 %{
-#include "../../include/ReG_Steer_Appside.h"
+#include "ReG_Steer_Appside.h"
 %}
 
-%include "../../include/ReG_Steer_types.h"
+%include "ReG_Steer_types.h"
 
 /* Set up pointers */
 %include "cpointer.i"
@@ -49,7 +49,7 @@
 
 /* A set of typemaps to convert a perl list of ints and a length
  * variable to an array of ints */
-%typemap(perl5, in) (int length, int *array) {
+%typemap(in) (int length, int *array) {
   int i;
   I32 len;
   AV* tempav;
@@ -78,14 +78,14 @@
 
 /* A set of typemaps to map a returned string array and length
  * variable into two python lists of strings and ints */
-%typemap(perl5, in, numinputs=0) (int *length, char **outstrs) {
+%typemap(in, numinputs=0) (int *length, char **outstrs) {
   int i;
   $1 = (int*) malloc(sizeof(int));
   $2 = (char**) malloc(REG_MAX_NUM_STR_PARAMS * sizeof(char*));
   for(i = 0; i < REG_MAX_NUM_STR_PARAMS; i++)
     $2[i] = (char*) malloc(REG_MAX_STRING_LENGTH * sizeof(char));
 }
-%typemap(perl5, argout) (int *length, char **outstrs) {
+%typemap(argout) (int *length, char **outstrs) {
   int i;
   AV* outArray;
   SV** svList;
@@ -113,7 +113,7 @@
 
 /* A set of typemaps to map a returned int array, string array and
  * length variable into two python lists of strings and ints */
-%typemap(perl5, in, numinputs=0) (int *length, int *outints, char **outstrs) {
+%typemap(in, numinputs=0) (int *length, int *outints, char **outstrs) {
   int i;
   $1 = (int*) malloc(sizeof(int));
   $2 = (int*) malloc(REG_MAX_NUM_STR_CMDS * sizeof(int));
@@ -121,7 +121,7 @@
   for(i = 0; i < REG_MAX_NUM_STR_CMDS; i++)
     $3[i] = (char*) malloc(REG_MAX_STRING_LENGTH * sizeof(char));
 }
-%typemap(perl5, argout) (int *length, int *outints, char **outstrs) {
+%typemap(argout) (int *length, int *outints, char **outstrs) {
   int i;
   AV* outArrayInts;
   AV* outArrayStrs;
@@ -163,10 +163,10 @@
 
 /* A set of typemaps to map a returned block of data into a
  * python list of the correct type */
-%typemap(perl5, in, numinputs=0) void *outdata {
+%typemap(in, numinputs=0) void *outdata {
   /* Just throw outdata away from the inputs! */
 }
-%typemap(perl5, check) (int type, int count, void *outdata) {
+%typemap(check) (int type, int count, void *outdata) {
   if($1 < 0 || $1 > 3) {
     printf("Type out of valid range!\n");
   }
@@ -190,7 +190,7 @@
     }
   }
 }
-%typemap(perl5, argout) (int type, int count, void *outdata) {
+%typemap(argout) (int type, int count, void *outdata) {
   int i;
   AV* outArray;
   SV* sv;
@@ -270,4 +270,4 @@
   int *IOHandleINOUT
 }
 
-%include "../ReG_Steer_API.i"
+%include "ReG_Steer_API.i"

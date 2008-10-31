@@ -32,10 +32,10 @@
 
 %module ReG_Steer
 %{
-#include "../../include/ReG_Steer_Appside.h"
+#include "ReG_Steer_Appside.h"
 %}
 
-%include "../../include/ReG_Steer_types.h"
+%include "ReG_Steer_types.h"
 
 /* Set up pointers */
 %include "cpointer.i"
@@ -49,7 +49,7 @@
 
 /* A set of typemaps to convert a python list of ints and a length
  * variable to an array of ints */
-%typemap(python, in) (int length, int *array) {
+%typemap(in) (int length, int *array) {
   int i;
   if(!PyList_Check($input)) {
     PyErr_SetString(PyExc_ValueError, "Expected a list");
@@ -75,14 +75,14 @@
 
 /* A set of typemaps to map a returned string array and length
  * variable into two python lists of strings and ints */
-%typemap(python, in, numinputs=0) (int *length, char **outstrs) {
+%typemap(in, numinputs=0) (int *length, char **outstrs) {
   int i;
   $1 = (int*) malloc(sizeof(int));
   $2 = (char**) malloc(REG_MAX_NUM_STR_PARAMS * sizeof(char*));
   for(i = 0; i < REG_MAX_NUM_STR_PARAMS; i++)
     $2[i] = (char*) malloc(REG_MAX_STRING_LENGTH * sizeof(char));
 }
-%typemap(python, argout) (int *length, char **outstrs) {
+%typemap(argout) (int *length, char **outstrs) {
   int i;
   PyObject* outliststrs = PyList_New(*$1);
   for(i = 0; i < *$1; i++) {
@@ -100,7 +100,7 @@
 
 /* A set of typemaps to map a returned int array, string array and
  * length variable into two python lists of strings and ints */
-%typemap(python, in, numinputs=0) (int *length, int *outints, char **outstrs) {
+%typemap(in, numinputs=0) (int *length, int *outints, char **outstrs) {
   int i;
   $1 = (int*) malloc(sizeof(int));
   $2 = (int*) malloc(REG_MAX_NUM_STR_CMDS * sizeof(int));
@@ -108,7 +108,7 @@
   for(i = 0; i < REG_MAX_NUM_STR_CMDS; i++)
     $3[i] = (char*) malloc(REG_MAX_STRING_LENGTH * sizeof(char));
 }
-%typemap(python, argout) (int *length, int *outints, char **outstrs) {
+%typemap(argout) (int *length, int *outints, char **outstrs) {
   int i;
   PyObject* outlistints = PyList_New(*$1);
   PyObject* outliststrs = PyList_New(*$1);
@@ -130,10 +130,10 @@
 
 /* A set of typemaps to map a returned block of data into a
  * python list of the correct type */
-%typemap(python, in, numinputs=0) void *outdata {
+%typemap(in, numinputs=0) void *outdata {
   /* Just throw outdata away from the inputs! */
 }
-%typemap(python, check) (int type, int count, void *outdata) {
+%typemap(check) (int type, int count, void *outdata) {
   if($1 < 0 || $1 > 3) {
     printf("Type out of valid range!\n");
   }
@@ -157,7 +157,7 @@
     }
   }
 }
-%typemap(python, argout) (int type, int count, void *outdata) {
+%typemap(argout) (int type, int count, void *outdata) {
   int i;
 
   PyObject* outlist;
@@ -219,4 +219,4 @@
   int *IOHandleINOUT
 }
 
-%include "../ReG_Steer_API.i"
+%include "ReG_Steer_API.i"

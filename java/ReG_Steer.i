@@ -32,14 +32,14 @@
 
 %module ReG_Steer
 %{
-#include "../../include/ReG_Steer_Appside.h"
-#include "../../include/ReG_Steer_Steerside.h"
+#include "ReG_Steer_Appside.h"
+#include "ReG_Steer_Steerside.h"
 %}
 
 /* Ensure that all #defined constants are wrapped in a sensible
  * mannner and then pull in the ReG_Steer_types header.  */
 %javaconst(1);
-%include "../../include/ReG_Steer_types.h"
+%include "ReG_Steer_types.h"
 
 /* Ensure that the initial module wrapping has package level
  * access so that the general public use the ReG_SteerAppside
@@ -85,7 +85,7 @@
  * A set of typemaps to convert a java array of ints into a
  * C array of ints and a length variable
  */
-%typemap(java, in) (int length, int *array) {
+%typemap(in) (int length, int *array) {
   $1 = (int) (*jenv)->GetArrayLength(jenv, $input);
   $2 = (int*) (*jenv)->GetIntArrayElements(jenv, $input, 0);
 }
@@ -100,7 +100,7 @@
 /*
  * A set of typemaps to update the contents of arrays of strings
  */
-%typemap(java, in) char **update (jint len) {
+%typemap(in) char **update (jint len) {
   int i;
   if(!$input) {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "array null");
@@ -113,7 +113,7 @@
     $1[i] = (char*) malloc(REG_MAX_STRING_LENGTH * sizeof(char));
   }
 }
-%typemap(java, argout) char **update {
+%typemap(argout) char **update {
   int i;
   jstring temp_string;
   for(i = 0; i < len$argnum; i++) {
@@ -136,10 +136,10 @@
 /*
  * A set of typemaps for the data emitter method
  */
-%typemap(java, in, numinputs=0) (int type, int count) {
+%typemap(in, numinputs=0) (int type, int count) {
   /* Just throw these away as we can work them out! */
 }
-%typemap(java, check) (int type, int count, void* indata) {
+%typemap(check) (int type, int count, void* indata) {
   if((*jenv)->IsInstanceOf(jenv, jarg4, (*jenv)->FindClass(jenv, "[I")) == JNI_TRUE) {
     $1 = REG_INT;
     $2 = (*jenv)->GetArrayLength(jenv, jarg4);
@@ -187,10 +187,10 @@
 /*
  * A set of typemaps for the data consumer method
  */
-%typemap(java, in, numinputs=0) void* outdata {
+%typemap(in, numinputs=0) void* outdata {
   /* Just throw outdata away from the inputs! */
 }
-%typemap(java, check) (int type, int count, void *outdata) {
+%typemap(check) (int type, int count, void *outdata) {
   switch($1) {
   case REG_INT:
     $3 = (int*) malloc($2 * sizeof(int));
@@ -206,7 +206,7 @@
     break;
   }
 }
-%typemap(java, argout) (int type, int count, void* outdata) {
+%typemap(argout) (int type, int count, void* outdata) {
   jintArray iArray;
   jbyteArray bArray;
   jstring cString;
@@ -260,13 +260,13 @@
 /*
  * A set of typemaps for the get_param_details method
  */
-%typemap(java, in, numinputs=0) Param_details_struct* outdetails {
+%typemap(in, numinputs=0) Param_details_struct* outdetails {
   /* Just throw outdata away from the inputs! */
 }
-%typemap(java, check) (int count, Param_details_struct* outdetails) {
+%typemap(check) (int count, Param_details_struct* outdetails) {
   $2 = (Param_details_struct*) malloc($1 * sizeof(Param_details_struct));
 }
-%typemap(java, argout) (int steer, int count, Param_details_struct* outdetails) {
+%typemap(argout) (int steer, int count, Param_details_struct* outdetails) {
   jclass regParam;
   jobjectArray paramArray;
 
@@ -311,7 +311,7 @@
 /*
  * A set of typemaps to cope with reg_security_info passed in
  */
-%typemap(java, in) const struct reg_security_info* sec_in {
+%typemap(in) const struct reg_security_info* sec_in {
   jclass regSec;
   jmethodID getMethod;
   jboolean usingSSL;
@@ -379,17 +379,17 @@
 /*
  * A set of typemaps to cope with reg_security_info passed out
  */
-%typemap(java, in, numinputs=0) struct reg_security_info* sec_out {
+%typemap(in, numinputs=0) struct reg_security_info* sec_out {
   /* Just throw $1 away from the inputs! */
 }
-%typemap(java, check) struct reg_security_info* sec_out {
+%typemap(check) struct reg_security_info* sec_out {
   $1 = 0;
   $1 = (struct reg_security_info*) malloc(sizeof(struct reg_security_info));
   if(!$1) {
     return 0;
   }
 }
-%typemap(java, argout) struct reg_security_info* sec_out {
+%typemap(argout) struct reg_security_info* sec_out {
   jclass regSec;
   jmethodID regSecCons;
   jvalue args[5];
@@ -422,17 +422,17 @@
 /*
  * A set of typemaps for the registry_contents struct passed out
  */
-%typemap(java, in, numinputs=0) struct registry_contents* cont_out {
+%typemap(in, numinputs=0) struct registry_contents* cont_out {
   /* Just throw $1 away from the inputs! */
 }
-%typemap(java, check) struct registry_contents* cont_out {
+%typemap(check) struct registry_contents* cont_out {
   $1 = 0;
   $1 = (struct registry_contents*) malloc(sizeof(struct registry_contents));
   if(!$1) {
     return 0;
   }
 }
-%typemap(java, argout) struct registry_contents* cont_out {
+%typemap(argout) struct registry_contents* cont_out {
   int num = $1->numEntries;
   jclass regEntry;
   jobjectArray entryArray;
@@ -483,7 +483,7 @@
 /*
  * A set of typemaps to accept arrays of Strings as arrays of char*
  */
-%typemap(java, in) char **inStrings(jint len) {
+%typemap(in) char **inStrings(jint len) {
   int i;
   if(!$input) {
     $1 = NULL;
@@ -518,7 +518,7 @@
 /*
  * A set of typemaps to accept arrays of ints as int* (and handle NULL!)
  */
-%typemap(java, in) int *inInts(jint len) {
+%typemap(in) int *inInts(jint len) {
   if(!$input) {
     $1 = NULL;
     len = 0;
@@ -603,7 +603,7 @@
 
 
 /* Pull in the common API definition file */
-%include "../ReG_Steer_API.i"
+%include "ReG_Steer_API.i"
 
 
 
