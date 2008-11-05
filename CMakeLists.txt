@@ -37,6 +37,13 @@ project(REG_WRAP C)
 cmake_minimum_required(VERSION 2.6)
 set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/CMake")
 
+# version numbers
+set(REG_WRAP_VERSION_MAJ 2)
+set(REG_WRAP_VERSION_MIN 5)
+set(REG_WRAP_VERSION_PAT 0-rc1)
+set(REG_WRAP_VERSION 
+    "${REG_WRAP_VERSION_MAJ}.${REG_WRAP_VERSION_MIN}.${REG_WRAP_VERSION_PAT}")
+
 # set output directories, or at least hide them.
 if(NOT LIBRARY_OUTPUT_PATH)
   set(LIBRARY_OUTPUT_PATH "" CACHE INTERNAL "Hide output directory option for building libraries.")
@@ -47,11 +54,19 @@ if(NOT EXECUTABLE_OUTPUT_PATH)
 endif(NOT EXECUTABLE_OUTPUT_PATH)
 
 #
-# find the RealityGrid Steering Library
+# find the RealityGrid Steering Library and check version
 #
 
 find_package(RealityGrid REQUIRED)
 include(${RealityGrid_USE_FILE})
+
+if(NOT ${REG_LIB_VERSION_MAJ} EQUAL ${REG_WRAP_VERSION_MAJ})
+  message(FATAL_ERROR "Steering Library version mismatch. You can not use these wrappers (version ${REG_WRAP_VERSION}) to create wrappers for the selected Steering Library (version ${REG_STEER_LIB_VERSION}).")
+else(NOT ${REG_LIB_VERSION_MAJ} EQUAL ${REG_WRAP_VERSION_MAJ})
+  if(NOT ${REG_LIB_VERSION_MIN} EQUAL ${REG_WRAP_VERSION_MIN})
+    message("Steering Library version mismatch. You may encounter problems using these wrappers (version ${REG_WRAP_VERSION}) to create wrappers for the selected Steering Library (version ${REG_STEER_LIB_VERSION}).")
+  endif(NOT ${REG_LIB_VERSION_MIN} EQUAL ${REG_WRAP_VERSION_MIN})
+endif(NOT ${REG_LIB_VERSION_MAJ} EQUAL ${REG_WRAP_VERSION_MAJ})
 
 #
 # set up install location
