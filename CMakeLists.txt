@@ -40,8 +40,8 @@ set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/CMake")
 # version numbers
 set(REG_WRAP_VERSION_MAJ 2)
 set(REG_WRAP_VERSION_MIN 5)
-set(REG_WRAP_VERSION_PAT 0-rc1)
-set(REG_WRAP_VERSION 
+set(REG_WRAP_VERSION_PAT 0-rc2)
+set(REG_WRAP_VERSION
     "${REG_WRAP_VERSION_MAJ}.${REG_WRAP_VERSION_MIN}.${REG_WRAP_VERSION_PAT}")
 
 # set output directories, or at least hide them.
@@ -73,10 +73,14 @@ endif(NOT ${REG_LIB_VERSION_MAJ} EQUAL ${REG_WRAP_VERSION_MAJ})
 #
 
 # optionally install into the current ReG location
-option(REG_WRAP_INSTALL_TO_REG_DIR
-  "Install the wrappers to the same location as the RealityGrid installation that they are being built for?"
-  OFF
-)
+# if not building against a build tree install
+if(${RealityGrid_INSTALL_TYPE} MATCHES "install")
+  option(REG_WRAP_INSTALL_TO_REG_DIR
+    "Install the wrappers to the same location as the RealityGrid installation that they are being built for?"
+    OFF
+  )
+endif(${RealityGrid_INSTALL_TYPE} MATCHES "install")
+
 if(REG_WRAP_INSTALL_TO_REG_DIR)
   set(CMAKE_INSTALL_PREFIX ${RealityGrid_INSTALL_PREFIX}
     CACHE PATH
