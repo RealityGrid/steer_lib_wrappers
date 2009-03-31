@@ -31,7 +31,7 @@
 #  Author.........: Robert Haines
 #----------------------------------------------------------------------
 
-project(REG_WRAP C)
+project(REG_WRAP)
 
 # cmake setup boiler-plate
 cmake_minimum_required(VERSION 2.6)
