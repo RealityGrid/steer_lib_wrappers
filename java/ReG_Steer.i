@@ -49,6 +49,7 @@
 %{
 #include "ReG_Steer_Appside.h"
 #include "ReG_Steer_Steerside.h"
+#include "ReG_Steer_Browser.h"
 %}
 
 /* Ensure that all #defined constants are wrapped in a sensible
