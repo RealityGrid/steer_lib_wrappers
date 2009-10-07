@@ -103,7 +103,7 @@
   for(i = 0; i < *$1; i++) {
     PyList_SetItem(outliststrs, i, PyString_FromString($2[i]));
   }
-  $result = t_output_helper($result, outliststrs);
+  $result = SWIG_Python_AppendOutput($result, outliststrs);
 }
 %typemap(freearg) (int *length, char **outstrs) {
   int i;
@@ -131,8 +131,8 @@
     PyList_SetItem(outlistints, i, PyInt_FromLong($2[i]));
     PyList_SetItem(outliststrs, i, PyString_FromString($3[i]));
   }
-  $result = t_output_helper($result, outlistints);
-  $result = t_output_helper($result, outliststrs);
+  $result = SWIG_Python_AppendOutput($result, outlistints);
+  $result = SWIG_Python_AppendOutput($result, outliststrs);
 }
 %typemap(freearg) (int *length, int *outints, char **outstrs) {
   int i;
@@ -198,7 +198,7 @@
       PyList_SetItem(outlist, i, PyFloat_FromDouble(((double*) $3)[i]));
     break;
   }
-  $result = t_output_helper($result, outlist);
+  $result = SWIG_Python_AppendOutput($result, outlist);
 }
 %typemap(freearg) void *outdata {
   if($1) free($1);
