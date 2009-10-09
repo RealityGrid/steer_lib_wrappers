@@ -55,6 +55,7 @@ public class MiniSteerer implements ReG_SteerConstants {
 
   /* global variables */
   private int simHandle;
+  private int appSeqNum;
 
   public static void main(String[] argv) {
     MiniSteerer ms = new MiniSteerer();
@@ -75,10 +76,10 @@ public class MiniSteerer implements ReG_SteerConstants {
     }
 
     /* ask the user which sim to attach to */
-    System.out.print("Do (l)ocal or (r)emote attach [r]: ");
+    System.out.print("Do (s)tandard (files or sockets) or (g)rid attach [g]: ");
     char userChar = IO.readChar();
 
-    if(userChar == 'l' || userChar == 'L') {
+    if(userChar == 's' || userChar == 'S') {
       try {
 	simHandle = rss.simAttach("");
       }
@@ -107,6 +108,7 @@ public class MiniSteerer implements ReG_SteerConstants {
     }
 
     System.out.println("Attached to sim, simHandle = " + simHandle);
+    appSeqNum = 0;
   }
 
   private void run() {
@@ -162,72 +164,21 @@ public class MiniSteerer implements ReG_SteerConstants {
 
 	case 'e':
 	  int[] h = new int[1];
-	  h[0] = 6;
+	  h[0] = chooseParam(simHandle, true);
 	  String[] st = new String[1];
-	  st[0] = "111";
+	  System.out.println("Editing parameter with handle " + h[0] + "...");
+	  System.out.print("New value: ");
+	  st[0] = IO.readLine();
 	  rss.setParamValues(simHandle, h, st);
 	  rss.emitControl(simHandle, null, null);
 	  break;
 
 	case 'g':
-	  int[] message = rss.getNextMessage();
+	  done = getMessage();
+	  break;
 
-	  switch(message[1]) {
-	  case SUPP_CMDS:
-	    // supported commands should only be output once as part
-	    // of handshaking process!
-	    if(REG_DEBUG == 1) {
-	      System.out.println("ERROR: Got supported commands message\n");
-	    }
-	    break;
-	  case MSG_NOTSET:
-	    if(REG_DEBUG == 1) {
-	      System.out.println("No message received");
-	    }
-	    break;
-	  case IO_DEFS:
-	    System.out.println("Got IO definitions");
-	    rss.consumeIOTypeDefs(message[0]);
-	    break;
-	  case CHK_DEFS:
-	    System.out.println("Got checkpoint definitions");
-	    rss.consumeChkTypeDefs(message[0]);
-	    break;
-	  case PARAM_DEFS:
-	    System.out.println("Got parameter definitions");
-	    rss.consumeParamDefs(message[0]);
-	    break;
-	  case STATUS:
-	    System.out.println("Got status message");
-	    int[] cmds = new int[REG_MAX_NUM_STR_CMDS];
-	    int seqNum = rss.consumeStatus(simHandle, cmds);
-
-	    for(int i = 0; i < cmds.length; i++) {
-	      switch(cmds[i]) {
-	      case REG_STR_STOP:
-	      case REG_STR_DETACH:
-		simHandle = rss.deleteSimTableEntry(simHandle);
-		done = true;
-		break;
-	      default:
-		break;
-	      }
-	      if(done) break;
-	    }
-	    System.out.println("Application seqNum: " + seqNum);
-	    
-	    break;
-	  case CONTROL:
-	    System.out.println("Got control message");
-	    break;
-	  case STEER_LOG:
-	    System.out.println("Got log message");
-	    break;
-	  default:
-	    System.out.println("Unrecognised msg returned by getNextMessage.");
-	    break;
-	  }
-
+	case 'G':
+	  done = getAllMessages();
 	  break;
 
 	case 'h':
@@ -370,6 +321,86 @@ public class MiniSteerer implements ReG_SteerConstants {
     }
 
     return params[sel].getHandle();
+  }
+
+  private boolean getAllMessages() {
+    int count = 0;
+    int appSeqNumOld;
+    boolean done;
+
+    do {
+      appSeqNumOld = appSeqNum;
+      done = getMessage();
+      count = count + (appSeqNum - appSeqNumOld);
+    } while((appSeqNum != appSeqNumOld) && !done);
+
+    System.out.println("Caught-up " + count + " message" +
+		       (count == 1 ? "" : "s"));
+    
+    return done;
+  }
+
+  private boolean getMessage() {
+    boolean done = false;
+    int[] message = rss.getNextMessage();
+
+    switch(message[1]) {
+    case SUPP_CMDS:
+      // supported commands should only be output once as part
+      // of handshaking process!
+      if(REG_DEBUG == 1) {
+	System.out.println("ERROR: Got supported commands message\n");
+      }
+      break;
+    case MSG_NOTSET:
+      if(REG_DEBUG == 1) {
+	System.out.println("No message received");
+      }
+      break;
+    case IO_DEFS:
+      System.out.println("Got IO definitions");
+      rss.consumeIOTypeDefs(message[0]);
+      break;
+    case CHK_DEFS:
+      System.out.println("Got checkpoint definitions");
+      rss.consumeChkTypeDefs(message[0]);
+      break;
+    case PARAM_DEFS:
+      System.out.println("Got parameter definitions");
+      rss.consumeParamDefs(message[0]);
+      break;
+    case STATUS:
+      System.out.println("Got status message");
+      int[] cmds = new int[REG_MAX_NUM_STR_CMDS];
+      appSeqNum = rss.consumeStatus(simHandle, cmds);
+
+      for(int i = 0; i < cmds.length; i++) {
+	switch(cmds[i]) {
+	case REG_STR_STOP:
+	case REG_STR_DETACH:
+	  simHandle = rss.deleteSimTableEntry(simHandle);
+	  done = true;
+	  break;
+	default:
+	  break;
+	}
+	if(done) break;
+      }
+      System.out.println("Application seqNum: " + appSeqNum);
+	    
+      break;
+    case CONTROL:
+      System.out.println("Got control message");
+      break;
+    case STEER_LOG:
+      System.out.println("Got log message");
+      break;
+    default:
+      System.out.println("Unrecognised msg returned by getNextMessage.");
+      break;
+    }
+
+    return done;
   }
 
 }
