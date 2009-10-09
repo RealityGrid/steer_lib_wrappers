@@ -64,7 +64,7 @@ public class Sink implements Runnable, ReG_SteerConstants {
   int iotype_handle;
 
   /* Monitored parameter */
-  ReG_SteerParameter bytesRead;
+  ReG_SteerParameter<Integer> bytesRead;
 
   public static void main(String argv[]) {
     new Sink();
@@ -79,7 +79,7 @@ public class Sink implements Runnable, ReG_SteerConstants {
 
     int[] commands = {REG_STR_STOP};
     try {
-      rsa.steeringInitialize("Java Sink v1.0", commands);
+      rsa.steeringInitialize("Java Sink v3.0", commands);
     }
     catch(ReG_SteerException e) {
       System.err.println(e.getMessage());
@@ -96,7 +96,7 @@ public class Sink implements Runnable, ReG_SteerConstants {
     }
 
     /* Register monitored parameter */
-    bytesRead = ReG_SteerParameter.create("Items_read", false, REG_INT, "", "");
+    bytesRead = new ReG_SteerParameter<Integer>("Items_read", false, 0);
     try {
       bytesRead.register();
     }
@@ -165,6 +165,8 @@ public class Sink implements Runnable, ReG_SteerConstants {
 		    break;
 		  if(data instanceof String) 
 		    System.out.println(data);
+		  else
+		    System.out.println("Got some data");
 		}
 
 		/* Reached the end of this data set; 'close' the channel */

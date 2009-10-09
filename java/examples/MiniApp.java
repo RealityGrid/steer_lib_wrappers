@@ -66,16 +66,16 @@ public class MiniApp implements Runnable, ReG_SteerConstants {
 
 
   /* Monitored and Steered parameters */
-  ReG_SteerParameter sleepTime;
-  ReG_SteerParameter opacityStepStop;
-  ReG_SteerParameter temp;
-  ReG_SteerParameter nx;
-  ReG_SteerParameter ny;
-  ReG_SteerParameter nz;
-  ReG_SteerParameter aAxis;
-  ReG_SteerParameter bAxis;
-  ReG_SteerParameter cAxis;
-  ReG_SteerParameter bool;
+  ReG_SteerParameter<Integer> sleepTime;
+  ReG_SteerParameter<Integer> opacityStepStop;
+  ReG_SteerParameter<Float> temp;
+  ReG_SteerParameter<Integer> nx;
+  ReG_SteerParameter<Integer> ny;
+  ReG_SteerParameter<Integer> nz;
+  ReG_SteerParameter<Double> aAxis;
+  ReG_SteerParameter<Double> bAxis;
+  ReG_SteerParameter<Double> cAxis;
+  ReG_SteerParameter<Integer> bool;
 
   public static void main(String[] argv) {
     new MiniApp();
@@ -109,16 +109,16 @@ public class MiniApp implements Runnable, ReG_SteerConstants {
     numIOTypes = 2;
 
     /* Register the parameters */
-    sleepTime = ReG_SteerParameter.create("time_to_sleep", 1, true, "0", "100");
-    opacityStepStop = ReG_SteerParameter.create("OPACITY_STEP_STOP", 130, true, "0", "256");
-    temp = ReG_SteerParameter.create("TEMP", 55.6f, false, "", "");
-    aAxis = ReG_SteerParameter.create("a_axis", 1.5, true, "0.01", "10.0");
-    bAxis = ReG_SteerParameter.create("b_axis", 1.5, true, "0.01", "10.0");
-    cAxis = ReG_SteerParameter.create("c_axis", 1.5, true, "0.01", "10.0");
-    nx = ReG_SteerParameter.create("nx", 16, true, "1", "");
-    ny = ReG_SteerParameter.create("ny", 16, true, "1", "");
-    nz = ReG_SteerParameter.create("nz", 16, true, "1", "");
-    bool = ReG_SteerParameter.create("boolean", 0, true, "0", "1");
+    sleepTime = new ReG_SteerParameter<Integer>("time_to_sleep", true, 1, "0", "100");
+    opacityStepStop = new ReG_SteerParameter<Integer>("OPACITY_STEP_STOP", true, 130, "0", "256");
+    temp = new ReG_SteerParameter<Float>("TEMP", false, 55.6f, "", "");
+    aAxis = new ReG_SteerParameter<Double>("a_axis", true, 1.5, "0.01", "10.0");
+    bAxis = new ReG_SteerParameter<Double>("b_axis", true, 1.5, "0.01", "10.0");
+    cAxis = new ReG_SteerParameter<Double>("c_axis", true, 1.5, "0.01", "10.0");
+    nx = new ReG_SteerParameter<Integer>("nx", true, 16, "1", "");
+    ny = new ReG_SteerParameter<Integer>("ny", true, 16, "1", "");
+    nz = new ReG_SteerParameter<Integer>("nz", true, 16, "1", "");
+    bool = new ReG_SteerParameter<Integer>("boolean", true, 0, "0", "1");
 
     try {
       sleepTime.register();

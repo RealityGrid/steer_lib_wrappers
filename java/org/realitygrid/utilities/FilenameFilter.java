@@ -38,7 +38,7 @@ import javax.swing.filechooser.*;
  *     chooser.showOpenDialog(this);
  *     </code>
  *
- * @version 1.8 08/26/98
+ * @version 2.0 October 2009
  * @author Jeff Dinkins - Sun Microsystems, Inc.
  * @author Robert Haines - University of Manchester, UK.
  */
@@ -47,7 +47,7 @@ public class FilenameFilter extends FileFilter {
     private static String TYPE_UNKNOWN = "Type Unknown";
     private static String HIDDEN_FILE = "Hidden File";
 
-    private Hashtable filters = null;
+    private Hashtable<String,FilenameFilter> filters = null;
     private String description = null;
     private String fullDescription = null;
     private boolean useExtensionsInDescription = true;
@@ -59,7 +59,7 @@ public class FilenameFilter extends FileFilter {
      * @see #addExtension(String)
      */
     public FilenameFilter() {
-	this.filters = new Hashtable();
+	this.filters = new Hashtable<String,FilenameFilter>();
     }
 
     /**
@@ -172,7 +172,7 @@ public class FilenameFilter extends FileFilter {
      */
     public void addExtension(String extension) {
 	if(filters == null) {
-	    filters = new Hashtable(5);
+	    filters = new Hashtable<String,FilenameFilter>(5);
 	}
 	filters.put(extension.toLowerCase(), this);
 	fullDescription = null;
