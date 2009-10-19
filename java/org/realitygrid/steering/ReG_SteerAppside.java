@@ -50,12 +50,12 @@ package org.realitygrid.steering;
 /**
  * This class provides access to the RealityGrid application side API.
  *
- * @version 1.2b
+ * @version 3.0
  * @author Robert Haines
- * @author Andrew Porter (RealityGrid API)
  * @see <a href="http://www.realitygrid.org/">The RealityGrid Website</a>
- * @see <a href="http://www.sve.man.ac.uk/Research/AtoZ/RealityGrid">the RealityGrid pages at Manchester Computing</a>
- * @see <a href="http://www.sve.man.ac.uk/Research/AtoZ/RealityGrid/Steering/ReG_Steering_API_v1.2b.pdf">RealityGrid API Documentation v1.2b (PDF file)</a>
+ * @see <a href="http://code.google.com/p/computational-steering/">
+   the Computational Steering pages at Google Code</a>
+ * @see <a href="http://computational-steering.googlecode.com/files/steering_api-1.2.pdf">RealityGrid API Documentation v1.2 (PDF file)</a>
  */
 public class ReG_SteerAppside implements ReG_SteerConstants {
 
@@ -358,7 +358,7 @@ public class ReG_SteerAppside implements ReG_SteerConstants {
    * @see #getChangedParamLabels()
    * @see #getReceivedCommands()
    * @see #getReceivedCommandParams()
-   * @see <a href="http://www.sve.man.ac.uk/Research/AtoZ/RealityGrid/Steering/ReG_Steering_API_v1.2b.pdf">RealityGrid API Documentation v1.2b (PDF file)</a>
+   * @see <a href="http://computational-steering.googlecode.com/files/steering_api-1.2.pdf">RealityGrid API Documentation v1.2 (PDF file)</a>
    */
   public int[] steeringControl(int step) throws ReG_SteerException {
     int[] result = new int[2];
@@ -471,7 +471,7 @@ public class ReG_SteerAppside implements ReG_SteerConstants {
    *
    * @see #emitStart(int, int)
    * @see #emitStart(int, int, float)
-   * @see <a href="http://www.sve.man.ac.uk/Research/AtoZ/RealityGrid/Steering/ReG_Steering_API_v1.2b.pdf">RealityGrid API Documentation v1.2b (PDF file)</a>
+   * @see <a href="http://computational-steering.googlecode.com/files/steering_api-1.2.pdf">RealityGrid API Documentation v1.2 (PDF file)</a>
    */
   public void emitDataSlice(int ioh, Object data) throws ReG_SteerException {
     Object dataSlice;
@@ -594,7 +594,7 @@ public class ReG_SteerAppside implements ReG_SteerConstants {
    * @see java.lang.Object
    * @see #consumeStart(int)
    * @see #consumeStart(int, float)
-   * @see <a href="http://www.sve.man.ac.uk/Research/AtoZ/RealityGrid/Steering/ReG_Steering_API_v1.2b.pdf">RealityGrid API Documentation v1.2b (PDF file)</a>
+   * @see <a href="http://computational-steering.googlecode.com/files/steering_api-1.2.pdf">RealityGrid API Documentation v1.2 (PDF file)</a>
    */
   public Object consumeDataSlice(int ioh) {
     Intp dataType = new Intp();

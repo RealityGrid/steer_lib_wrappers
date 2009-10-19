@@ -61,7 +61,8 @@ import java.io.IOException;
  * @version 1.0
  * @author Robert Haines
  * @see <a href="http://www.realitygrid.org/">The RealityGrid Website</a>
- * @see <a href="http://www.sve.man.ac.uk/Research/AtoZ/RealityGrid">the RealityGrid pages at Manchester Computing</a>
+ * @see <a href="http://www.rcs.manchester.ac.uk/research/realitygrid/">the RealityGrid pages at Research Computing Services</a>
+ * @see <a href="http://code.google.com/p/computational-steering/">the Computational Steering pages at Google Code</a>
  */
 public final class IO {
 

@@ -24,8 +24,8 @@ import javax.swing.filechooser.*;
  * A convenience implementation of FileFilter that filters out
  * all files except for those type extensions that it knows about.
  *
- * Extensions are of the type ".foo", which is typically found on
- * Windows and Unix boxes, but not on Macintosh. Case is ignored.
+ * Extensions are of the type ".foo", which is typical of those found
+ * on most systems. Case is ignored.
  *
  * <p>Example - create a new filter that filers out all files
  * but gif and jpg image files:<p>

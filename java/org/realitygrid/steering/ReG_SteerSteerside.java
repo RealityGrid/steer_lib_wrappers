@@ -47,6 +47,16 @@
 
 package org.realitygrid.steering;
 
+/**
+ * This class provides access to the RealityGrid steering side API.
+ *
+ * @version 3.0
+ * @author Robert Haines
+ * @see <a href="http://www.realitygrid.org/">The RealityGrid Website</a>
+ * @see <a href="http://code.google.com/p/computational-steering/">
+   the Computational Steering pages at Google Code</a>
+ * @see <a href="http://computational-steering.googlecode.com/files/steering_api-1.2.pdf">RealityGrid API Documentation v1.2 (PDF file)</a>
+ */
 public class ReG_SteerSteerside implements ReG_SteerConstants {
   
   private static ReG_SteerSteerside instance = new ReG_SteerSteerside();
@@ -139,7 +149,15 @@ public class ReG_SteerSteerside implements ReG_SteerConstants {
   }
 
   /**
+   * Query the registry for a list of its entries.
    *
+   * @param regAddress The registry address.
+   * @param sec The security details to use.
+   * 
+   * @return The list of entries in the registry.
+   *
+   * @see #getRegistryEntriesFilteredSecure
+   * @see ReG_SteerSecurity
    */
   public ReG_SteerRegistryEntry[] getRegistryEntriesSecure(String regAddress,
 						      ReG_SteerSecurity sec) {
@@ -147,7 +165,17 @@ public class ReG_SteerSteerside implements ReG_SteerConstants {
   }
 
   /**
+   * Query the registry for a list of its entries filtered by the specified
+   * pattern.
    *
+   * @param regAddress The registry address.
+   * @param sec The security details to use.
+   * @param pattern The pattern to filter the registry entries against.
+   * 
+   * @return The filtered list of entries in the registry.
+   * 
+   * @see #getRegistryEntriesSecure
+   * @see ReG_SteerSecurity
    */
   public ReG_SteerRegistryEntry[] getRegistryEntriesFilteredSecure(String regAddress,
 						      ReG_SteerSecurity sec,
@@ -156,7 +184,21 @@ public class ReG_SteerSteerside implements ReG_SteerConstants {
   }
 
   /**
+   * Attach to a simulation.
    *
+   * @param simID The ID of the simulation to attach to. If using WSRF steering
+   * this will be SWS EPR. If using sockets-based steering it can be a string
+   * in the form <code>host:port</code> or empty, in which case the simulation
+   * address will be determined by the contents of
+   * <code>REG_APP_ADDRESS</code>. If using file-based steering it should be
+   * empty.
+   *
+   * @return The internal handle ID of this simulation.
+   *
+   * @throws ReG_SteerException If unable to attach.
+   *
+   * @see #simAttachSecure
+   * @see #simDetach
    */
   public int simAttach(String simID) throws ReG_SteerException {
     Intp simHandle = new Intp();
@@ -176,7 +218,22 @@ public class ReG_SteerSteerside implements ReG_SteerConstants {
   }
 
   /**
+   * Attach to a simulation.
    *
+   * @param simID The ID of the simulation to attach to. If using WSRF steering
+   * this will be SWS EPR. If using sockets-based steering it can be a string
+   * in the form <code>host:port</code> or empty, in which case the simulation
+   * address will be determined by the contents of
+   * <code>REG_APP_ADDRESS</code>. If using file-based steering it should be
+   * empty.
+   * @param sec The security details to use.
+   *
+   * @return The internal handle ID of this simulation.
+   *
+   * @throws ReG_SteerException If unable to attach.
+   *
+   * @see #simAttach
+   * @see #simDetach
    */
   public int simAttachSecure(String simID, ReG_SteerSecurity sec) throws ReG_SteerException {
     Intp simHandle = new Intp();
@@ -196,7 +253,12 @@ public class ReG_SteerSteerside implements ReG_SteerConstants {
   }
 
   /**
+   * Detach from a connected simulation.
    *
+   * @param simHandle The internal ID of the simulation to detach from.
+   *
+   * @see #simAttach
+   * @see #simAttachSecure
    */
   public int simDetach(int simHandle) {
     Intp sh = new Intp();
@@ -208,7 +270,13 @@ public class ReG_SteerSteerside implements ReG_SteerConstants {
   }
 
   /**
+   * Deletes all data associated with the simulation with handle
+   * <code>simHandle</code>. Used when a simulation detaches. Supplied as a
+   * separate interface because also required when the simulation initiates the
+   * detach (e.g. when it has completed its run).
    *
+   * @param simHandle The internal ID of the simulation for which to delete the
+   * internal tables.
    */
   public int deleteSimTableEntry(int simHandle) {
     Intp sh = new Intp();
@@ -220,7 +288,16 @@ public class ReG_SteerSteerside implements ReG_SteerConstants {
   }
 
   /**
+   * Return the number of parameters (read-only or read-write) that have been
+   * registered in the connected simulation.
    *
+   * @param simHandle The internal ID of the simulation to query.
+   * @param steerable Whether to enumerate read-write (<code>REG_TRUE</code>)
+   * or read-only (<code>REG_FALSE</code>) parameters.
+   *
+   * @return The number of parameters.
+   *
+   * @throws ReG_SteerException If there was any sort of problem.
    */
   public int getParamNumber(int simHandle, boolean steerable) 
     throws ReG_SteerException {
@@ -244,7 +321,19 @@ public class ReG_SteerSteerside implements ReG_SteerConstants {
   }
 
   /**
+   * Get the parameter values from the connected application. This method acts
+   * in a rather c-like way in that you need to supply the number of parameters
+   * to be returned. This will be improved upon in a later version.
    *
+   * @param simHandle The internal ID of the simulation to query.
+   * @param steerable Whether to return read-write (<code>REG_TRUE</code>) or
+   * read-only (<code>REG_FALSE</code>) parameter values.
+   * @param numParams The number of parameters to be returned.
+   *
+   * @return An array of ReG_SteerParameter representing the set of parameters.
+   *
+   * @see #getParamNumber
+   * @see ReG_SteerParameter
    */
   public ReG_SteerParameter[] getParamValues(int simHandle, boolean steerable, int numParams) {
 
@@ -263,7 +352,17 @@ public class ReG_SteerSteerside implements ReG_SteerConstants {
   }
 
   /**
+   * Sets the values of the parameters with the specified handles for the
+   * specified simulation. Causes internal flags to be set to indicate that
+   * these parameter values have changed. The new values are sent to the
+   * simulation on the next call of emitControl().
    *
+   * @param simHandle The internal ID of the simulation of whose parameters to
+   * change.
+   * @param handles The parameter handles of the parameters to change.
+   * @param values The new values for the parameters.
+   *
+   * @throws ReG_SteerException If there is an internal library problem.
    */
   public void setParamValues(int simHandle, int[] handles, String[] values) throws ReG_SteerException {
     status = ReG_Steer.Set_param_values(simHandle, handles.length, handles, values);
@@ -274,7 +373,11 @@ public class ReG_SteerSteerside implements ReG_SteerConstants {
   }
 
   /**
+   * Get the number of supported commands from the application.
    *
+   * @param simHandle The internal ID of the simulation to query.
+   *
+   * @return The number of supported commands.
    */
   public int getSuppCmdNumber(int simHandle) throws ReG_SteerException {
     Intp numCmds = new Intp();
@@ -289,7 +392,14 @@ public class ReG_SteerSteerside implements ReG_SteerConstants {
   }
 
   /**
+   * Get the supported commands from the connected application. This method acts
+   * in a rather c-like way in that you need to supply the number of parameters
+   * to be returned. This will be improved upon in a later version.
    *
+   * @param simHandle The internal ID of the simulation to query.
+   * @param numCmds The number of commands to be returned.
+   *
+   * @return An array of the supported commands.
    */
   public int[] getSuppCmds(int simHandle, int numCmds) {
     int[] cmdIDs = new int[numCmds];    
@@ -416,7 +526,16 @@ public class ReG_SteerSteerside implements ReG_SteerConstants {
   }
 
   /**
+   * Consume the Checkpoint Type descriptions emitted by the steered
+   * application. These descriptions provide information to be displayed in
+   * steering clients in order to allow the user to request a checkpoint to be
+   * taken.
    *
+   * @param simHandle the handle of the simulation to query for Checkpoint Type
+   * descriptions.
+   *
+   * @throws ReG_SteerException If consumption of the Checkpoint Type
+   * descriptions fails the error code will be <code>REG_FAILURE</code>.
    */
   public void consumeChkTypeDefs(int simHandle) throws ReG_SteerException {
     
@@ -428,7 +547,15 @@ public class ReG_SteerSteerside implements ReG_SteerConstants {
   }
 
   /**
+   * Emit a steering-control message to a simulation. Emits the specified
+   * commands (if any) and automatically sends any (steerable) parameter
+   * values that have been edited since the last call to this routine.
    *
+   * @param simHandle the handle of the simulation to emit to.
+   * @param sysCmds List of commands to send.
+   * @param sysCmdParams Parameters (if any) to go with each command.
+   *
+   * @throws ReG_SteerException If there is an internal Steering Library error.
    */
   public void emitControl(int simHandle, int[] sysCmds, String[] sysCmdParams) throws ReG_SteerException {
     int numCmds = 0;
@@ -444,7 +571,13 @@ public class ReG_SteerSteerside implements ReG_SteerConstants {
   }
 
   /**
+   * Get the number of IOTypes from the application.
    *
+   * @param simHandle The internal ID of the simulation to query.
+   *
+   * @return The number of IOTypes.
+   *
+   * @throws ReG_SteerException If there is an internal Steering Library error.
    */
   public int getIOTypeNumber(int simHandle) throws ReG_SteerException {
     Intp numIOTypes = new Intp();
@@ -459,12 +592,22 @@ public class ReG_SteerSteerside implements ReG_SteerConstants {
   }
 
   /**
+   * Get the IOTypes from the connected application.
    *
+   * @param simHandle The internal ID of the simulation to query.
+   * @param ioHandles An array to hold the returned io handles of the IOTypes.
+   * @param ioLabels An array to hold the returned labels of the IOTypes.
+   * @param ioDirs An array to hold the returned directions of the IOTypes.
+   * @param ioFreqs An array to hold the returned in/out frequencies of the
+   * IOTypes.
+   *
+   * @throws ReG_SteerException If there is an internal Steering Library error.
    */
-  public void getIOTypes(int simHandle, int[] ioHandles, String[] ioLabels, int[] ioTypes, int[] ioFreqs) throws ReG_SteerException {
+  public void getIOTypes(int simHandle, int[] ioHandles, String[] ioLabels, int[] ioDirs, int[] ioFreqs) throws ReG_SteerException {
     int numIOs = ioHandles.length;
 
-    status = ReG_Steer.Get_iotypes(simHandle, numIOs, ioHandles, ioLabels, ioTypes, ioFreqs);
+    status = ReG_Steer.Get_iotypes(simHandle, numIOs, ioHandles, ioLabels,
+				   ioDirs, ioFreqs);
 
     if(status != REG_SUCCESS) {
       throw new ReG_SteerException("NO!", status);
@@ -472,7 +615,13 @@ public class ReG_SteerSteerside implements ReG_SteerConstants {
   }
 
   /**
+   * Get the number of Checkpoint Types from the application.
    *
+   * @param simHandle The internal ID of the simulation to query.
+   *
+   * @return The number of Checkpoint Types.
+   *
+   * @throws ReG_SteerException If there is an internal Steering Library error.
    */
   public int getChkTypeNumber(int simHandle) throws ReG_SteerException {
     Intp numChkTypes = new Intp();
@@ -487,12 +636,25 @@ public class ReG_SteerSteerside implements ReG_SteerConstants {
   }
 
   /**
+   * Get the Checkpoint Types from the connected application.
    *
+   * @param simHandle The internal ID of the simulation to query.
+   * @param chkHandles An array to hold the returned io handles of the
+   * Checkpoint Types.
+   * @param chkLabels An array to hold the returned labels of the Checkpoint
+   * Types.
+   * @param chkDirs An array to hold the returned directions of the Checkpoint
+   * Types.
+   * @param chkFreqs An array to hold the returned in/out frequencies of the
+   * Checkpoint Types.
+   *
+   * @throws ReG_SteerException If there is an internal Steering Library error.
    */
-  public void getChkTypes(int simHandle, int[] chkHandles, String[] chkLabels, int[] chkTypes, int[] chkFreqs) throws ReG_SteerException {
+  public void getChkTypes(int simHandle, int[] chkHandles, String[] chkLabels, int[] chkDirs, int[] chkFreqs) throws ReG_SteerException {
     int numChks = chkHandles.length;
 
-    status = ReG_Steer.Get_chktypes(simHandle, numChks, chkHandles, chkLabels, chkTypes, chkFreqs);
+    status = ReG_Steer.Get_chktypes(simHandle, numChks, chkHandles, chkLabels,
+				    chkDirs, chkFreqs);
 
     if(status != REG_SUCCESS) {
       throw new ReG_SteerException("NO!", status);
@@ -500,7 +662,14 @@ public class ReG_SteerSteerside implements ReG_SteerConstants {
   }
 
   /**
+   * Consume a status message emitted by the simulation associated with
+   * <code>simHandle</code>. Returns that simulation's current sequence no.
+   * and a list of any commands received (e.g. notification that it has
+   * finished). Any parameter values received by this routine are automatically
+   * used to update the internal library table of parameters.
    *
+   * @param simHandle The internal ID of the simulation to query.
+   * @param commands List of commands received from simulation.
    */
   public int consumeStatus(int simHandle, int[] commands) throws ReG_SteerException {
     Intp seqNum = new Intp();
@@ -516,7 +685,15 @@ public class ReG_SteerSteerside implements ReG_SteerConstants {
   }
 
   /**
+   * Emit a command to instruct the steered application to emit all of the
+   * logged values of the specified parameter. The log itself is stored
+   * internally and is accessed via Get_param_log().
    *
+   * @param simHandle The internal ID of the simulation to query.
+   * @param paramHandle The internal ID of the parameter for which to retrieve
+   * log.
+   *
+   * @throws ReG_SteerException If there is an internal Steering Library error.
    */
   public void emitRetrieveParamLogCmd(int simHandle, int paramHandle) throws ReG_SteerException {
     

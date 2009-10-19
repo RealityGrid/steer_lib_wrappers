@@ -48,8 +48,8 @@
 package org.realitygrid.steering;
 
 /**
- * This class provides information on a registry entry
- * as returned by various query routines.
+ * This class provides information on a registry entry as
+ * returned by various internal Steering Library query routines.
  *
  * @version 2.0
  * @author Robert Haines
