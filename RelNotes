@@ -1,6 +1,16 @@
 Release Notes for the RealityGrid Steering Library Wrappers
 -----------------------------------------------------------
 
+Version 3.0.1
+-------------
+
+ * Additions and updates to the Java wrapper documentation.
+
+ Internal changes
+ ----------------
+
+ * Change the Java and Javadoc targets to be consistently named.
+
 Version 3.0.0
 -------------
 
