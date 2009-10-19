@@ -12,7 +12,7 @@ class ReG_SteerJNI {
 
   static {
     try {
-      System.loadLibrary("ReG_SteerJava");
+      System.loadLibrary("ReG_Steer_Java");
     } catch(UnsatisfiedLinkError e) {
       System.err.println("Failed to load native code library:\n" + e);
       System.exit(1);

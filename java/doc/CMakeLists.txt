@@ -56,7 +56,7 @@ set(REG_WRAP_JAVADOC_OVERVIEW "${CMAKE_CURRENT_SOURCE_DIR}/../org/realitygrid/ov
 
 file(MAKE_DIRECTORY "${REG_WRAP_JAVADOC_OUTPUT_PATH}")
 
-add_custom_target(ReG_SteerJavadoc ALL
+add_custom_target(ReG_Steer_Javadoc ALL
   ${JAVA_JAVADOC}
   -d "${REG_WRAP_JAVADOC_OUTPUT_PATH}"
   -windowtitle \"RealityGrid Java API\"

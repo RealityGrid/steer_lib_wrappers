@@ -55,15 +55,15 @@ if(REG_WRAP_RE_SWIG)
   file(MAKE_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/org/realitygrid/steering")
   set(CMAKE_SWIG_OUTDIR "${CMAKE_CURRENT_BINARY_DIR}/org/realitygrid/steering")
   set(CMAKE_SWIG_FLAGS -package org.realitygrid.steering)
-  SWIG_ADD_MODULE(ReG_SteerJava java ${CMAKE_CURRENT_SOURCE_DIR}/ReG_Steer.i)
-  SWIG_LINK_LIBRARIES(ReG_SteerJava ${REG_LINK_LIBRARIES} ${REG_EXTERNAL_LIBS})
-  set_target_properties(${SWIG_MODULE_ReG_SteerJava_REAL_NAME}
-    PROPERTIES OUTPUT_NAME libReG_SteerJava
+  SWIG_ADD_MODULE(ReG_Steer_Java java ${CMAKE_CURRENT_SOURCE_DIR}/ReG_Steer.i)
+  SWIG_LINK_LIBRARIES(ReG_Steer_Java ${REG_LINK_LIBRARIES} ${REG_EXTERNAL_LIBS})
+  set_target_properties(${SWIG_MODULE_ReG_Steer_Java_REAL_NAME}
+    PROPERTIES OUTPUT_NAME libReG_Steer_Java
   )
 else(REG_WRAP_RE_SWIG)
   set(REG_WRAP_JAVA_PREGEN_SRCS generated/ReG_Steer_wrap.c)
-  add_library(ReG_SteerJava SHARED ${REG_WRAP_JAVA_PREGEN_SRCS})
-  target_link_libraries(ReG_SteerJava
+  add_library(ReG_Steer_Java SHARED ${REG_WRAP_JAVA_PREGEN_SRCS})
+  target_link_libraries(ReG_Steer_Java
     ${REG_LINK_LIBRARIES} ${REG_EXTERNAL_LIBS}
   )
   include_directories(${CMAKE_CURRENT_SOURCE_DIR}/generated)
@@ -76,7 +76,7 @@ include_directories(
   ${CMAKE_CURRENT_BINARY_DIR}
 )
 add_library(ReG_Steer_Jar ${REG_JAVA_FILES})
-add_dependencies(ReG_Steer_Jar libReG_SteerJava)
+add_dependencies(ReG_Steer_Jar ReG_Steer_Java)
 set_target_properties(ReG_Steer_Jar PROPERTIES OUTPUT_NAME ReG_Steer)
 
 # build the docs?
@@ -87,7 +87,7 @@ endif(REG_WRAP_BUILD_JAVADOC)
 
 # install rules
 set(REG_WRAP_JAVA_INSTALL ${REG_WRAP_LIB_INSTALL}/java)
-install(TARGETS ReG_SteerJava ReG_Steer_Jar
+install(TARGETS ReG_Steer_Java ReG_Steer_Jar
   LIBRARY DESTINATION ${REG_WRAP_JAVA_INSTALL}
   ARCHIVE DESTINATION ${REG_WRAP_JAVA_INSTALL}
 )
