@@ -1,7 +1,7 @@
 #
 #  The RealityGrid Steering Library Wrappers
 #
-#  Copyright (c) 2002-2009, University of Manchester, United Kingdom.
+#  Copyright (c) 2002-2010, University of Manchester, United Kingdom.
 #  All rights reserved.
 #
 #  This software is produced by Research Computing Services, University
@@ -50,6 +50,8 @@ set(CMAKE_USER_MAKE_RULES_OVERRIDE "JavaCompileOverride")
 enable_language(Java)
 find_package(JNI REQUIRED)
 include_directories(${JAVA_INCLUDE_PATH} ${JAVA_INCLUDE_PATH2})
+mark_as_advanced(CMAKE_Java_ARCHIVE)
+mark_as_advanced(CMAKE_Java_RUNTIME)
 
 if(REG_WRAP_RE_SWIG)
   file(MAKE_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/org/realitygrid/steering")
