@@ -1,7 +1,7 @@
 #
 #  The RealityGrid Steering Library Wrappers
 #
-#  Copyright (c) 2002-2009, University of Manchester, United Kingdom.
+#  Copyright (c) 2002-2010, University of Manchester, United Kingdom.
 #  All rights reserved.
 #
 #  This software is produced by Research Computing Services, University
@@ -73,13 +73,7 @@ endif(NOT EXECUTABLE_OUTPUT_PATH)
 find_package(RealityGrid REQUIRED)
 include(${RealityGrid_USE_FILE})
 
-if(NOT ${REG_LIB_VERSION_MAJ} EQUAL ${REG_WRAP_VERSION_MAJ})
-  message(FATAL_ERROR "Steering Library version mismatch. You can not use these wrappers (version ${REG_WRAP_VERSION}) to create wrappers for the selected Steering Library (version ${REG_STEER_LIB_VERSION}).")
-else(NOT ${REG_LIB_VERSION_MAJ} EQUAL ${REG_WRAP_VERSION_MAJ})
-  if(NOT ${REG_LIB_VERSION_MIN} EQUAL ${REG_WRAP_VERSION_MIN})
-    message("Steering Library version mismatch. You may encounter problems using these wrappers (version ${REG_WRAP_VERSION}) to create wrappers for the selected Steering Library (version ${REG_STEER_LIB_VERSION}).")
-  endif(NOT ${REG_LIB_VERSION_MIN} EQUAL ${REG_WRAP_VERSION_MIN})
-endif(NOT ${REG_LIB_VERSION_MAJ} EQUAL ${REG_WRAP_VERSION_MAJ})
+reg_check_version("Wrappers" ${REG_WRAP_VERSION_MAJ})
 
 #
 # set up install location
