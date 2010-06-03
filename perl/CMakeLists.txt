@@ -1,7 +1,7 @@
 #
 #  The RealityGrid Steering Library Wrappers
 #
-#  Copyright (c) 2002-2009, University of Manchester, United Kingdom.
+#  Copyright (c) 2002-2010, University of Manchester, United Kingdom.
 #  All rights reserved.
 #
 #  This software is produced by Research Computing Services, University
@@ -80,6 +80,6 @@ else(REG_WRAP_RE_SWIG)
 endif(REG_WRAP_RE_SWIG)
 
 # install rules
-set(REG_WRAP_PERL_INSTALL ${REG_WRAP_LIB_INSTALL}/perl)
-install(TARGETS ReG_Steer_Perl LIBRARY DESTINATION ${REG_WRAP_PERL_INSTALL})
-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/ReG_Steer.pm DESTINATION ${REG_WRAP_PERL_INSTALL})
+set(WRAPPERS_PERL_INSTALL ${WRAPPERS_LIB_INSTALL}/perl)
+install(TARGETS ReG_Steer_Perl LIBRARY DESTINATION ${WRAPPERS_PERL_INSTALL})
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/ReG_Steer.pm DESTINATION ${WRAPPERS_PERL_INSTALL})

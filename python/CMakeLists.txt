@@ -1,7 +1,7 @@
 #
 #  The RealityGrid Steering Library Wrappers
 #
-#  Copyright (c) 2002-2009, University of Manchester, United Kingdom.
+#  Copyright (c) 2002-2010, University of Manchester, United Kingdom.
 #  All rights reserved.
 #
 #  This software is produced by Research Computing Services, University
@@ -82,11 +82,11 @@ else(REG_WRAP_RE_SWIG)
 endif(REG_WRAP_RE_SWIG)
 
 # install rules
-set(REG_WRAP_PYTHON_INSTALL ${REG_WRAP_LIB_INSTALL}/python)
+set(WRAPPERS_PYTHON_INSTALL ${WRAPPERS_LIB_INSTALL}/python)
 if(REG_WRAP_RE_SWIG)
-  install(TARGETS _ReG_Steer_Python LIBRARY DESTINATION ${REG_WRAP_PYTHON_INSTALL})
+  install(TARGETS _ReG_Steer_Python LIBRARY DESTINATION ${WRAPPERS_PYTHON_INSTALL})
 else(REG_WRAP_RE_SWIG)
-  install(TARGETS ReG_Steer_Python LIBRARY DESTINATION ${REG_WRAP_PYTHON_INSTALL})
+  install(TARGETS ReG_Steer_Python LIBRARY DESTINATION ${WRAPPERS_PYTHON_INSTALL})
 endif(REG_WRAP_RE_SWIG)
 
-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/ReG_Steer.py DESTINATION ${REG_WRAP_PYTHON_INSTALL})
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/ReG_Steer.py DESTINATION ${WRAPPERS_PYTHON_INSTALL})

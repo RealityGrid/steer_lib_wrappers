@@ -1,7 +1,7 @@
 #
 #  The RealityGrid Steering Library Wrappers
 #
-#  Copyright (c) 2002-2009, University of Manchester, United Kingdom.
+#  Copyright (c) 2002-2010, University of Manchester, United Kingdom.
 #  All rights reserved.
 #
 #  This software is produced by Research Computing Services, University
@@ -76,4 +76,4 @@ add_custom_target(ReG_Steer_Javadoc ALL
 )
 
 # install rules
-install(DIRECTORY "${REG_WRAP_JAVADOC_OUTPUT_PATH}" DESTINATION ${REG_WRAP_DOC_INSTALL})
+install(DIRECTORY "${REG_WRAP_JAVADOC_OUTPUT_PATH}" DESTINATION ${WRAPPERS_DOC_INSTALL})

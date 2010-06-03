@@ -81,32 +81,7 @@ reg_check_version("Wrappers" ${REG_WRAP_VERSION_MAJ})
 
 # optionally install into the current ReG location
 # if not building against a build tree install
-if(${RealityGrid_INSTALL_TYPE} MATCHES "install")
-  option(REG_WRAP_INSTALL_TO_REG_DIR
-    "Install the wrappers to the same location as the RealityGrid installation that they are being built for?"
-    OFF
-  )
-endif(${RealityGrid_INSTALL_TYPE} MATCHES "install")
-
-if(REG_WRAP_INSTALL_TO_REG_DIR)
-  set(CMAKE_INSTALL_PREFIX ${RealityGrid_INSTALL_PREFIX}
-    CACHE PATH
-    "Install path prefix, prepended onto install directories. The default setting is to install the wrappers to the same location as the RealityGrid installation that they are being built for."
-    FORCE
-  )
-
-  string(
-    REPLACE "${RealityGrid_INSTALL_PREFIX}/" "" REG_WRAP_LIB_INSTALL
-    ${RealityGrid_LIBRARY_DIRS}
-  )
-  string(
-    REPLACE "${RealityGrid_INSTALL_PREFIX}/" "" REG_WRAP_DOC_INSTALL
-    ${RealityGrid_DOCS_DIR}
-  )
-else(REG_WRAP_INSTALL_TO_REG_DIR)
-  set(REG_WRAP_LIB_INSTALL "lib/RealityGrid")
-  set(REG_WRAP_DOC_INSTALL "share/doc/RealityGrid")
-endif(REG_WRAP_INSTALL_TO_REG_DIR)
+reg_setup_install_dirs("Wrappers")
 
 #
 # rebuild the swig wrappers from scratch?
