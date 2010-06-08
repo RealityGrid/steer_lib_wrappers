@@ -83,6 +83,12 @@ reg_check_version("Wrappers" ${REG_WRAP_VERSION_MAJ})
 # if not building against a build tree install
 reg_setup_install_dirs("Wrappers")
 
+# set up the RealityGrid library link line
+#
+# if the Steering Library uses modules, this macro
+# does "the right thing"
+reg_link_modules()
+
 #
 # rebuild the swig wrappers from scratch?
 # if not, simply use the provided pre-generated ones

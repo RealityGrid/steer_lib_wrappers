@@ -83,6 +83,18 @@ REG_WRAP_BUILD_JAVADOC - default OFF
 
 Turn ON to build the javadoc documentation for the Java wrappers.
 
+REG_USE_MODULE_Samples - default sockets
+
+Choose the transport over which sample data is moved. Current choices
+are sockets, files or proxy - Only available if the Steering Library
+has been built as a modular library.
+
+REG_USE_MODULE_Steering - default sockets
+
+Choose the transport which is used to pass steering messages. Current
+choices are sockets, wsrf or files - Only available if the Steering
+Library has been built as a modular library.
+
 ----------------------------------------------------------------------
 
 Any comments, enquiries or pleas for explanation should be directed to
