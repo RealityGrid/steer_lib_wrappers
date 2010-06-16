@@ -31,10 +31,10 @@ SWIG
 The Simple Wrapper and Interface Generator is used to create the
 wrappers. By default you do not need SWIG installed as this
 distribution provides pre-generated wrappers which have been shown to
-work for Linux and Mac OS X. If you are having problems however you
-may need to rebuild the wrapper code, in which case you will need SWIG
-installed. It is available from http://www.swig.org/ if it doesn't
-come with your OS.
+work for Linux, Mac OS X and Solaris. If you are having problems
+however you may need to rebuild the wrapper code, in which case you
+will need SWIG installed. It is available from http://www.swig.org/ if
+it doesn't come with your OS.
 
 An option to rebuild the wrappers is provided within the CMake build
 interface and is OFF by default.

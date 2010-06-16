@@ -1,6 +1,19 @@
 Release Notes for the RealityGrid Steering Library Wrappers
 -----------------------------------------------------------
 
+Version 3.5.0
+-------------
+
+ * Adjust the use of the Perl CPPFLAGS to allow for the empty string.
+
+ Internal changes
+ ----------------
+
+ * Hide the Java executables in CMake.
+ * Use new macro provided by steer_lib to check version numbers.
+ * Use new macro provided by steer_lib to set install location.
+ * Use new macro provided by steer_lib to setup the link line correctly.
+
 Version 3.0.1
 -------------
 
