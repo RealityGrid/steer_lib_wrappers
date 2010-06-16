@@ -50,9 +50,11 @@ include_directories(${PERL_INCLUDE_PATH})
 if(REG_WRAP_RE_SWIG)
   set(CMAKE_SWIG_FLAGS -proxy -exportall)
   SWIG_ADD_MODULE(ReG_Steer_Perl perl ${CMAKE_CURRENT_SOURCE_DIR}/ReG_Steer.i)
-  set_source_files_properties(ReG_SteerPERL_wrap.c
-    PROPERTIES COMPILE_FLAGS ${PERL_EXTRA_C_FLAGS}
-  )
+  if(NOT ${PERL_EXTRA_C_FLAGS} STREQUAL "\n")
+    set_source_files_properties(ReG_SteerPERL_wrap.c
+      PROPERTIES COMPILE_FLAGS ${PERL_EXTRA_C_FLAGS}
+    )
+  endif(NOT ${PERL_EXTRA_C_FLAGS} STREQUAL "\n")
   SWIG_LINK_LIBRARIES(ReG_Steer_Perl
     ${REG_LINK_LIBRARIES} ${REG_EXTERNAL_LIBS} ${PERL_LIBRARY}
   )
@@ -65,9 +67,11 @@ else(REG_WRAP_RE_SWIG)
   target_link_libraries(ReG_Steer_Perl
     ${REG_LINK_LIBRARIES} ${REG_EXTERNAL_LIBS} ${PERL_LIBRARY}
   )
-  set_source_files_properties(${REG_WRAP_PERL_PREGEN_SRCS}
-    PROPERTIES COMPILE_FLAGS ${PERL_EXTRA_C_FLAGS}
-  )
+  if(NOT ${PERL_EXTRA_C_FLAGS} STREQUAL "\n")
+    set_source_files_properties(${REG_WRAP_PERL_PREGEN_SRCS}
+      PROPERTIES COMPILE_FLAGS ${PERL_EXTRA_C_FLAGS}
+    )
+  endif(NOT ${PERL_EXTRA_C_FLAGS} STREQUAL "\n")
   set_target_properties(ReG_Steer_Perl PROPERTIES
     PREFIX ""
     OUTPUT_NAME ReG_Steer
